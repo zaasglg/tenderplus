@@ -1,21 +1,20 @@
-import tailwindcss from '@tailwindcss/vite';
-import react from '@vitejs/plugin-react';
-import laravel from 'laravel-vite-plugin';
-import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
+import { resolve } from 'path';
 
 export default defineConfig({
     plugins: [
         laravel({
             input: ['resources/css/app.css', 'resources/js/app.tsx'],
             ssr: 'resources/js/ssr.tsx',
-            refresh: false, // ускоряет сборку
+            refresh: false,
         }),
         react(),
         tailwindcss(),
     ],
 
-    // МЕГА-ВАЖНО: отключаем проблемные пакеты, вызывающие зависание
     optimizeDeps: {
         exclude: [
             '@react-aria/utils',
@@ -27,11 +26,10 @@ export default defineConfig({
         ],
     },
 
-    // Уменьшаем нагрузку на сервер → сборка быстрее
     build: {
-        sourcemap: false, // очень ускоряет
+        sourcemap: false,
         target: 'esnext',
-        minify: 'esbuild', // быстрее, чем terser
+        minify: 'esbuild',
         commonjsOptions: {
             include: [],
         },
